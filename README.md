@@ -1,59 +1,59 @@
-# Airplane Crash Database and Analysis
+# Base de Données et Analyse des Crashs Aériens
 
-This project aims to create a comprehensive database of airplane crashes and perform statistical analysis and predictive modeling to understand the factors contributing to these incidents.
+Ce projet vise à créer une base de données complète des crashs aériens et à réaliser des analyses statistiques et des modèles prédictifs pour comprendre les facteurs contribuant à ces incidents.
 
-## Table of Contents
+## Table des Matières
 - [Introduction](#introduction)
-- [Data Sources](#data-sources)
-- [Database Schema](#database-schema)
-- [Data Extraction](#data-extraction)
-- [Data Analysis and Modeling](#data-analysis-and-modeling)
-- [Predictive Model Specification](#predictive-model-specification)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Sources de Données](#sources-de-données)
+- [Schéma de la Base de Données](#schéma-de-la-base-de-données)
+- [Extraction des Données](#extraction-des-données)
+- [Analyse des Données et Modélisation](#analyse-des-données-et-modélisation)
+- [Spécification du Modèle Prédictif](#spécification-du-modèle-prédictif)
+- [Utilisation](#utilisation)
+- [Contribuer](#contribuer)
+- [Licence](#licence)
 
 ## Introduction
-Air travel remains one of the safest modes of transportation, but incidents and accidents still occur. This project aims to create a detailed database of airplane crashes, analyze the data to identify patterns and trends, and develop predictive models to help understand the factors that contribute to these accidents.
+Le transport aérien reste l'un des modes de transport les plus sûrs, mais des incidents et des accidents se produisent encore. Ce projet vise à créer une base de données détaillée des crashs aériens, à analyser les données pour identifier les tendances et les modèles, et à développer des modèles prédictifs pour mieux comprendre les facteurs qui contribuent à ces accidents.
 
-## Data Sources
-The primary sources of data for this project are:
+## Sources de Données
+Les principales sources de données pour ce projet sont :
 - [National Transportation Safety Board (NTSB)](https://www.ntsb.gov/Pages/AviationQueryv2.aspx)
 - [Aviation Safety Network (ASN)](https://asn.flightsafety.org/)
 - [Bureau d'Enquêtes et d'Analyses (BEA)](https://www.bea.aero/en/investigation-reports/list-of-reports)
 - [Air Accidents Investigation Branch (AAIB)](https://www.gov.uk/government/organisations/air-accidents-investigation-branch)
 - [Bundesstelle für Flugunfalluntersuchung (BFU)](https://www.bfu-web.de/EN/Publications/Investigation-Report)
-- [European Union Aviation Safety Agency (EASA)](https://www.easa.europa.eu/document-library/accident-reports)
+- [Agence de l'Union Européenne pour la Sécurité Aérienne (EASA)](https://www.easa.europa.eu/document-library/accident-reports)
 
-## Database Schema
-The database schema is designed to store detailed information about airplane crashes. The main table is `airplane_crashes`, which includes the following fields:
-- `id`: Unique identifier for each crash
-- `event_date`: Date of the crash
-- `location`: Location of the crash
-- `operator`: Operator of the aircraft
-- `aircraft_type`: Type of the aircraft
-- `registration`: Registration number of the aircraft
-- `flight_number`: Flight number
-- `route`: Route of the flight
-- `fatalities`: Number of fatalities
-- `description`: Description of the crash
-- `source_url`: URL of the source of the information
+## Schéma de la Base de Données
+Le schéma de la base de données est conçu pour stocker des informations détaillées sur les crashs aériens. La table principale est `airplane_crashes`, qui comprend les champs suivants :
+- `id` : Identifiant unique pour chaque crash
+- `event_date` : Date du crash
+- `location` : Lieu du crash
+- `operator` : Opérateur de l'avion
+- `aircraft_type` : Type de l'avion
+- `registration` : Numéro d'immatriculation de l'avion
+- `flight_number` : Numéro de vol
+- `route` : Itinéraire du vol
+- `fatalities` : Nombre de victimes
+- `description` : Description du crash
+- `source_url` : URL de la source de l'information
 
-## Data Extraction
-Data is extracted from the NTSB, ASN, BEA, AAIB, BFU, and EASA websites using web scraping techniques and stored in the `airplane_crashes` table. The extraction script is written in Python and uses the `requests` and `beautifulsoup4` libraries.
+## Extraction des Données
+Les données sont extraites des sites web du NTSB, ASN, BEA, AAIB, BFU, et EASA en utilisant des techniques de web scraping et stockées dans la table `airplane_crashes`. Le script d'extraction est écrit en Python et utilise les bibliothèques `requests` et `beautifulsoup4`.
 
-### Script for Data Extraction
+### Script pour l'Extraction des Données
 
-```python name=extract_data.py
+```python name=translations/fr/extract_data.py
 import requests
 import psycopg2
 from bs4 import BeautifulSoup
 
-# Database connection
+# Connexion à la base de données
 conn = psycopg2.connect("dbname=yourdbname user=youruser password=yourpassword host=yourhost port=yourport")
 cur = conn.cursor()
 
-# Function to extract data from a given URL
+# Fonction pour extraire les données d'une URL donnée
 def extract_data_from_url(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
@@ -87,7 +87,7 @@ def extract_data_from_url(url):
     
     return crashes
 
-# List of URLs to extract data from
+# Liste des URLs pour extraire les données
 urls = [
     "https://www.ntsb.gov/Pages/AviationQueryv2.aspx",
     "https://www.bea.aero/en/investigation-reports/list-of-reports",
@@ -96,7 +96,7 @@ urls = [
     "https://www.easa.europa.eu/document-library/accident-reports"
 ]
 
-# Extract data from each URL and insert into the database
+# Extraire les données de chaque URL et les insérer dans la base de données
 for url in urls:
     crashes = extract_data_from_url(url)
     for crash in crashes:
@@ -106,83 +106,83 @@ for url in urls:
         """, (crash['event_date'], crash['location'], crash['operator'], crash['aircraft_type'], crash['registration'], crash['flight_number'], crash['route'], crash['fatalities'], crash['description'], crash['source_url']))
         conn.commit()
 
-# Close the database connection
+# Fermer la connexion à la base de données
 cur.close()
 conn.close()
 ```
 
-## Data Analysis and Modeling
-The analysis and modeling section includes:
-- **Exploratory Data Analysis (EDA)**: Visualizing and understanding the data.
-- **Statistical Analysis**: Identifying patterns and trends.
-- **Predictive Modeling**: Building and evaluating models to predict airplane crashes.
+## Analyse des Données et Modélisation
+La section d'analyse et de modélisation comprend :
+- **Analyse Exploratoire des Données (EDA)** : Visualisation et compréhension des données.
+- **Analyse Statistique** : Identification des tendances et des modèles.
+- **Modélisation Prédictive** : Construction et évaluation de modèles pour prédire les crashs aériens.
 
-### Exploratory Data Analysis (EDA)
-EDA involves visualizing the distribution of crashes over time, geographical locations, operators, aircraft types, and other factors.
+### Analyse Exploratoire des Données (EDA)
+L'EDA implique la visualisation de la distribution des crashs au fil du temps, des lieux géographiques, des opérateurs, des types d'avions, et d'autres facteurs.
 
-### Statistical Analysis
-Statistical tests and models are used to identify significant factors contributing to airplane crashes.
+### Analyse Statistique
+Des tests et des modèles statistiques sont utilisés pour identifier les facteurs significatifs qui contribuent aux crashs aériens.
 
-### Predictive Modeling
-Machine learning models are developed to predict the likelihood of airplane crashes based on various factors. The models are evaluated using metrics such as accuracy, precision, recall, and F1-score.
+### Modélisation Prédictive
+Des modèles d'apprentissage automatique sont développés pour prédire la probabilité des crashs aériens en fonction de divers facteurs. Les modèles sont évalués en utilisant des métriques telles que l'exactitude, la précision, le rappel et le F1-score.
 
-## Predictive Model Specification
+## Spécification du Modèle Prédictif
 
-````markdown name=model_specification.md
-# Predictive Model for Airplane Crashes
+````markdown name=translations/fr/model_specification.md
+# Modèle Prédictif pour les Crashs Aériens
 
 ## Introduction
-This document outlines the detailed specification of a predictive model designed to forecast the likelihood of airplane crashes based on historical data. The model aims to identify the factors that contribute to airplane crashes and predict future incidents.
+Ce document décrit la spécification détaillée d'un modèle prédictif conçu pour prévoir la probabilité des crashs aériens en se basant sur des données historiques. Le modèle vise à identifier les facteurs qui contribuent aux crashs aériens et à prédire les incidents futurs.
 
-## Data
-The data used for this model is sourced from the National Transportation Safety Board (NTSB) and the Aviation Safety Network (ASN). The dataset includes detailed information about airplane crashes, such as the date, location, operator, aircraft type, and number of fatalities.
+## Données
+Les données utilisées pour ce modèle proviennent du National Transportation Safety Board (NTSB) et de l'Aviation Safety Network (ASN). Le jeu de données comprend des informations détaillées sur les crashs aériens, telles que la date, le lieu, l'opérateur, le type d'avion et le nombre de victimes.
 
-## Data Preprocessing
-Before building the model, the data undergoes several preprocessing steps:
-1. **Data Cleaning**: Removing or imputing missing values, correcting data types, and handling outliers.
-2. **Feature Engineering**: Creating new features from existing data, such as the time of year, weather conditions, and aircraft age.
-3. **Data Normalization**: Scaling numerical features to ensure they have similar ranges.
+## Prétraitement des Données
+Avant de construire le modèle, les données passent par plusieurs étapes de prétraitement :
+1. **Nettoyage des Données** : Suppression ou imputation des valeurs manquantes, correction des types de données et gestion des valeurs aberrantes.
+2. **Ingénierie des Caractéristiques** : Création de nouvelles caractéristiques à partir des données existantes, telles que la période de l'année, les conditions météorologiques et l'âge de l'avion.
+3. **Normalisation des Données** : Mise à l'échelle des caractéristiques numériques pour s'assurer qu'elles ont des plages similaires.
 
-## Model Selection
-Several machine learning algorithms will be evaluated to find the best model for predicting airplane crashes. These algorithms include:
-1. **Logistic Regression**: A simple yet effective model for binary classification problems.
-2. **Random Forest**: An ensemble method that combines multiple decision trees to improve accuracy.
-3. **Gradient Boosting**: Another ensemble method that builds models sequentially to correct errors made by previous models.
-4. **Support Vector Machine (SVM)**: A powerful classifier that finds the optimal hyperplane to separate classes.
+## Sélection du Modèle
+Plusieurs algorithmes d'apprentissage automatique seront évalués pour trouver le meilleur modèle pour prédire les crashs aériens. Ces algorithmes incluent :
+1. **Régression Logistique** : Un modèle simple mais efficace pour les problèmes de classification binaire.
+2. **Forêt d'Arbres Décisionnels** : Une méthode d'ensemble qui combine plusieurs arbres décisionnels pour améliorer la précision.
+3. **Gradient Boosting** : Une autre méthode d'ensemble qui construit des modèles de manière séquentielle pour corriger les erreurs des modèles précédents.
+4. **Machine à Vecteurs de Support (SVM)** : Un classifieur puissant qui trouve l'hyperplan optimal pour séparer les classes.
 
-## Model Training
-The dataset is split into training and testing sets. The training set is used to train the model, and the testing set is used to evaluate its performance. Cross-validation is performed to ensure the model generalizes well to unseen data.
+## Entraînement du Modèle
+Le jeu de données est divisé en ensembles d'entraînement et de test. L'ensemble d'entraînement est utilisé pour entraîner le modèle, et l'ensemble de test est utilisé pour évaluer ses performances. Une validation croisée est effectuée pour s'assurer que le modèle se généralise bien aux données non vues.
 
-## Model Evaluation
-The model's performance is evaluated using the following metrics:
-1. **Accuracy**: The proportion of correctly predicted instances.
-2. **Precision**: The proportion of true positive predictions among all positive predictions.
-3. **Recall**: The proportion of true positive predictions among all actual positives.
-4. **F1-Score**: The harmonic mean of precision and recall, providing a balance between the two.
+## Évaluation du Modèle
+Les performances du modèle sont évaluées en utilisant les métriques suivantes :
+1. **Exactitude** : La proportion des instances correctement prédites.
+2. **Précision** : La proportion des prédictions positives vraies parmi toutes les prédictions positives.
+3. **Rappel** : La proportion des prédictions positives vraies parmi toutes les instances positives réelles.
+4. **F1-Score** : La moyenne harmonique de la précision et du rappel, fournissant un équilibre entre les deux.
 
-## Hyperparameter Tuning
-Hyperparameter tuning is performed to optimize the model's performance. Techniques such as Grid Search and Random Search are used to find the best combination of hyperparameters for each algorithm.
+## Ajustement des Hyperparamètres
+L'ajustement des hyperparamètres est effectué pour optimiser les performances du modèle. Des techniques telles que la recherche sur grille et la recherche aléatoire sont utilisées pour trouver la meilleure combinaison d'hyperparamètres pour chaque algorithme.
 
-## Results
-The final model is selected based on its performance on the testing set. The results are presented in terms of accuracy, precision, recall, and F1-score. Visualizations such as confusion matrices and ROC curves are used to illustrate the model's performance.
+## Résultats
+Le modèle final est sélectionné en fonction de ses performances sur l'ensemble de test. Les résultats sont présentés en termes d'exactitude, de précision, de rappel et de F1-score. Des visualisations telles que les matrices de confusion et les courbes ROC sont utilisées pour illustrer les performances du modèle.
 
 ## Conclusion
-The predictive model provides valuable insights into the factors contributing to airplane crashes and helps forecast future incidents. The model can be used by aviation authorities and airlines to improve safety measures and prevent future crashes.
+Le modèle prédictif fournit des informations précieuses sur les facteurs contribuant aux crashs aériens et aide à prévoir les incidents futurs. Le modèle peut être utilisé par les autorités aéronautiques et les compagnies aériennes pour améliorer les mesures de sécurité et prévenir les crashs futurs.
 
-## Future Work
-Future improvements to the model may include:
-1. **Incorporating more features**: Adding additional data such as weather conditions, maintenance records, and pilot experience.
-2. **Improving data quality**: Enhancing the dataset by obtaining more accurate and comprehensive data.
-3. **Exploring advanced algorithms**: Investigating more sophisticated machine learning techniques such as deep learning.
+## Travaux Futurs
+Les améliorations futures du modèle peuvent inclure :
+1. **Incorporation de Plus de Caractéristiques** : Ajout de données supplémentaires telles que les conditions météorologiques, les dossiers de maintenance et l'expérience des pilotes.
+2. **Amélioration de la Qualité des Données** : Amélioration du jeu de données en obtenant des données plus précises et plus complètes.
+3. **Exploration de Nouveaux Algorithmes** : Investigation de techniques d'apprentissage automatique plus sophistiquées telles que l'apprentissage profond.
 
-## Usage
-To run the predictive model, follow these steps:
-1. Ensure the dataset is preprocessed and cleaned.
-2. Split the dataset into training and testing sets.
-3. Train the model using the training set.
-4. Evaluate the model using the testing set.
-5. Perform hyperparameter tuning to optimize the model's performance.
-6. Use the final model to make predictions and analyze the results.
+## Utilisation
+Pour exécuter le modèle prédictif, suivez ces étapes :
+1. Assurez-vous que le jeu de données est prétraité et nettoyé.
+2. Divisez le jeu de données en ensembles d'entraînement et de test.
+3. Entraînez le modèle en utilisant l'ensemble d'entraînement.
+4. Évaluez le modèle en utilisant l'ensemble de test.
+5. Effectuez l'ajustement des hyperparamètres pour optimiser les performances du modèle.
+6. Utilisez le modèle final pour faire des prédictions et analyser les résultats.
 
-## License
-This model specification is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+## Licence
+Cette spécification de modèle est licenciée sous la Licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
